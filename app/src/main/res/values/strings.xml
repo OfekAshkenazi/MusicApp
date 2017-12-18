@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MusicApp</string>
+    <string name="mp3_converter_base_url">http://www.flv2mp3.org/download/direct/mp3/</string>
+</resources>

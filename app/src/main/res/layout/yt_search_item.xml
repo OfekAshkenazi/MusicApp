@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/nameTV_ytList"
+        app:layout_constraintTop_toBottomOf="@+id/nameTV_ytList">
+
+
+        <ImageView
+            android:id="@+id/previewIV_ytList"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_background" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/listScrollView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@+id/previewIV_ytList"
+            app:layout_constraintTop_toTopOf="@+id/previewIV_ytList">
+
+            <TextView
+                android:id="@+id/nameTV_ytList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxHeight="50dp"
+                android:maxWidth="250dp"
+                android:text="Post Malone - rockstar ft. 21 Savage (Official Audio) "
+                android:textAlignment="viewStart"
+                android:textSize="14sp" />
+        </android.support.v4.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/downloadBtn_ytList"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="16dp"
+            android:backgroundTint="#f2f2f2"
+            android:text="Download"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <Button
+            android:id="@+id/playBtn_ytList"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#f2f2f2"
+            android:text="Play"
+            android:textAllCaps="false"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/downloadBtn_ytList" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>
