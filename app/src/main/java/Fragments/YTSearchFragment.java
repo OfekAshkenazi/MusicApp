@@ -9,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ofek.musicapp.MainActivity;
 import com.example.ofek.musicapp.R;
 import Adapters.YTSearchAdapter;
+import YoutubeDownloadTasks.Tasks.YoutubeSearchTask;
 
 
 import org.schabi.newpipe.extractor.InfoItem;
+import org.schabi.newpipe.extractor.search.SearchResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,9 @@ public class YTSearchFragment extends Fragment {
 
     private OnYtListFragmentInteractionListener mListener;
     private ArrayList<InfoItem> searchItems;
+    private String query;
+    YTSearchAdapter adapter;
+    private RecyclerView recyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -39,28 +45,47 @@ public class YTSearchFragment extends Fragment {
 
 
     }
-
+    public static YTSearchFragment getInstance(String query){
+        Bundle bundle=new Bundle();
+        YTSearchFragment fragment=new YTSearchFragment();
+        bundle.putString("query",query);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        query=getArguments().getString("query","query not found");
+        if (query.equals("query not found")){
+            throw new RuntimeException("query not found exception");
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.yt_search_frag_layout, container, false);
-        // Set the adapter
+
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (searchItems.size() <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                recyclerView.setAdapter(new YTSearchAdapter(searchItems, mListener));
-            }
+            recyclerView = (RecyclerView) view;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
         }
+
+        YoutubeSearchTask searchTask=new YoutubeSearchTask(new YoutubeSearchTask.OnSearchResultLoaded() {
+            @Override
+            public void onSearchResultLoaded(SearchResult result) {
+                searchItems=new ArrayList<>();
+                searchItems.addAll(result.resultList);
+                adapter=new YTSearchAdapter(searchItems,mListener);
+                recyclerView.setAdapter(adapter);
+                if (MainActivity.dialog!=null) {
+                    MainActivity.dialog.dismiss();
+                }
+            }
+        });
         return view;
     }
 

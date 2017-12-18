@@ -24,4 +24,10 @@
             android:layout_height="wrap_content">
         </com.claudiodegio.msv.MaterialSearchView>
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ytSearchContainer"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@id/toolbar_container"></RelativeLayout>
 </RelativeLayout>

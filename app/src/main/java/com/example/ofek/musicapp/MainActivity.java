@@ -1,8 +1,10 @@
 package com.example.ofek.musicapp;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +20,8 @@ import com.claudiodegio.msv.BaseMaterialSearchView;
 import com.claudiodegio.msv.OnSearchViewListener;
 
 import org.schabi.newpipe.extractor.search.SearchResult;
+
+import Fragments.YTSearchFragment;
 import YoutubeDownloadTasks.Tasks.YoutubeSearchTask;
 public class MainActivity extends AppCompatActivity {
 
@@ -26,13 +30,21 @@ public class MainActivity extends AppCompatActivity {
     public static boolean isPermissionsAllowed=false;
     private BaseMaterialSearchView searchView;
     Toolbar toolbar;
+    Handler searchHandler;
+    public static ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setHandler();
         isPermissionsAllowed=requestPermissions();
         setViews();
         setSupportActionBar(toolbar);
+    }
+
+    private void setHandler() {
+        searchHandler=new Handler();
     }
 
     private void setViews() {
@@ -50,22 +62,27 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public boolean onQueryTextSubmit(String s) {
-                YoutubeSearchTask searchTask=new YoutubeSearchTask(new YoutubeSearchTask.OnSearchResultLoaded() {
-                    @Override
-                    public void onSearchResultLoaded(SearchResult result) {
-
-                    }
-                });
-                searchTask.execute(s);
+            public boolean onQueryTextSubmit(final String s) {
+                dialog = ProgressDialog.show(MainActivity.this, "Youtube Searching",
+                        "Searching. Please wait...", true);
+                getSupportFragmentManager().beginTransaction().replace(R.id.ytSearchContainer,new YTSearchFragment());
                 return true;
             }
 
             @Override
             public void onQueryTextChange(String s) {
-
+                searchHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        searchMusicInLocalStorage();
+                    }
+                },1000);
             }
         });
+    }
+
+    private void searchMusicInLocalStorage() {
+
     }
 
     private boolean requestPermissions(){
@@ -114,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-
+    public void dismissSearchDialog(){
+        if (dialog!=null)
+            dialog.dismiss();
+    }
 
 }
